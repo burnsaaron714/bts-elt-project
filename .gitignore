@@ -1,3 +1,6 @@
 __pycache__/
 *.pyc
+data/raw/
+data/processed/*.csv
+data/processed/*.db
 .env
