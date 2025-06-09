@@ -48,7 +48,13 @@ de_project/
    cd bts-elt-project
    ```
 
-2. Install dependencies:
+2. **Create a `.env` file in the project root with your Azure credentials:**
+   ```
+   AZURE_STORAGE_CONNECTION_STRING=your_connection_string_here
+   AZURE_CONTAINER_NAME=your_container_name_here
+   ```
+
+3. **Install dependencies:**
    ```bash
    python3 -m venv env
    source env/bin/activate
@@ -63,6 +69,7 @@ de_project/
 4. Results will be printed to terminal and saved in:
    - `data/processed/on_time_cleaned_2023_Jul_Dec.csv`
    - `data/processed/flights.db`
+   - SQL summary CSVs in `data/processed/` (also uploaded to Azure Blob Storage)
 
 ## Azure Blob Storage
 
