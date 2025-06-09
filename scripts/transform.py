@@ -3,6 +3,7 @@
 import os
 import glob
 import pandas as pd
+from blob_utils import upload_file_to_blob  # Import Azure upload utility
 
 def main():
     """
@@ -65,6 +66,12 @@ def main():
     output_path = os.path.join(output_dir, "on_time_cleaned_2023_Jul_Dec.csv")
     combined.to_csv(output_path, index=False)
     print(f"\nSaved cleaned data to: {output_path}")
+
+    # Upload the cleaned CSV to Azure Blob Storage
+    upload_file_to_blob(
+        output_path,
+        os.path.basename(output_path)  # Use the filename as the blob name
+    )
 
 # This ensures main() only runs if this script is executed directly
 if __name__ == "__main__":

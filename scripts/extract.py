@@ -4,6 +4,7 @@ import os
 import requests
 import zipfile
 from io import BytesIO
+from blob_utils import upload_file_to_blob  # Import Azure upload utility
 
 def main():
     # Configuration
@@ -41,6 +42,12 @@ def main():
                             with open(out_path, "wb") as f_out:
                                 f_out.write(z.read(file_name))
                             print(f"Extracted to: {out_path}")
+
+                            # Upload the extracted CSV to Azure Blob Storage
+                            upload_file_to_blob(
+                                out_path,
+                                os.path.basename(out_path)  # Use the filename as the blob name
+                            )
                         else:
                             print(f"Already exists: {out_path}")
 

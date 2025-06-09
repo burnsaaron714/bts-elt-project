@@ -17,6 +17,7 @@ I built this project to sharpen my data engineering skills for interview prep. I
 
 - Python (pandas, sqlite3)
 - SQLite (local file-based DB)
+- Azure Blob Storage (cloud file storage)
 - CLI for orchestration
 - GitHub for version control
 
@@ -25,14 +26,16 @@ I built this project to sharpen my data engineering skills for interview prep. I
 ```
 de_project/
 ├── data/
-│   ├── raw/                # Original CSVs from BTS
-│   └── processed/          # Cleaned CSV + SQLite DB
+│   ├── raw/                # Original CSVs from BTS (also uploaded to Azure Blob Storage)
+│   └── processed/          # Cleaned CSV + SQLite DB (also uploaded to Azure Blob Storage)
 ├── scripts/
-│   ├── extract.py          # Downloads and unzips BTS data
-│   ├── transform.py        # Filters and cleans columns
-│   ├── load.py             # Writes to SQLite database
-│   └── run_sql.py          # SQL summary: flights, delays, averages
+│   ├── extract.py          # Downloads and unzips BTS data, uploads to Azure
+│   ├── transform.py        # Filters and cleans columns, uploads to Azure
+│   ├── load.py             # Downloads cleaned CSV from Azure if not present
+│   ├── run_sql.py          # SQL summary: flights, delays, averages (uploads results to Azure)
+│   └── blob_utils.py       # Azure Blob Storage utility functions
 ├── main.py                 # Orchestrates full pipeline
+├── .env                    # Azure credentials (not tracked in git)
 ├── .gitignore
 └── README.md
 ```
@@ -60,6 +63,35 @@ de_project/
 4. Results will be printed to terminal and saved in:
    - `data/processed/on_time_cleaned_2023_Jul_Dec.csv`
    - `data/processed/flights.db`
+
+## Azure Blob Storage
+
+**What is Azure Blob Storage used for in this project?**
+
+Azure Blob Storage is a cloud-based storage solution that allows this pipeline to:
+- **Upload** raw and processed data files for backup, sharing, and reproducibility.
+- **Download** required files if they are not present locally, enabling the pipeline to run from any environment.
+- **Upload SQL summary results** for remote access or further analysis.
+
+This makes the pipeline cloud-friendly, portable, and suitable for collaboration or deployment in production environments.
+
+1. **Create a `.env` file in the project root with:**
+   ```
+   AZURE_STORAGE_CONNECTION_STRING=your_connection_string_here
+   AZURE_CONTAINER_NAME=your_container_name_here
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   python3 -m venv env
+   source env/bin/activate
+   pip install -r requirements.txt
+   ```
+
+3. **Run the pipeline with Azure support:**
+   ```bash
+   python3 main.py --azure
+   ```
 
 ## Output Sample (SQL Summary)
 
