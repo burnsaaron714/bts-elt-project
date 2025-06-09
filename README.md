@@ -1,6 +1,6 @@
 # BTS Flight Delay ETL Pipeline
 
-This is an ETL/ELT pipeline built with Python that processes U.S. Department of Transportation - Bureau of Transportation Statistics (BTS) on time flight performance data from July–December 2023. The goal is to extract flight delay data, clean it, load it into a SQLite database, and generate a monthly delay summary by airline using SQL.
+This is an ETL pipeline built with Python that processes U.S. Department of Transportation - Bureau of Transportation Statistics (BTS) on time flight performance data from July–December 2023. The goal is to extract flight delay data, clean it, load it into a SQLite database, and generate a monthly delay summary by airline using SQL.
 
 ## Project Purpose
 
@@ -63,9 +63,35 @@ de_project/
 
 ## Output Sample (SQL Summary)
 
-| Airline | Month     | Flights | Delayed | Avg Dep Delay | Avg Arr Delay |
-|---------|-----------|---------|---------|----------------|----------------|
-| AA      | 2023-07   | 15000   | 3500    | 12.7           | 10.3           |
+### Total Flights and Delayed Flights by Airline
+
+| Airline | Total Flights | Delayed Flights |
+|---------|--------------|----------------|
+| AA      | 15000        | 3500           |
+
+### NAS Delay Summary by Airport
+
+| Airport | Total Flights | Flights with NAS Delay | Total NAS Delay Minutes | Avg NAS Delay (Delayed Flights) |
+|---------|--------------|-----------------------|------------------------|-------------------------------|
+| ATL     | 12000        | 800                   | 5400                   | 6.75                          |
+
+### Top 5 Airports with Longest Avg Departure Delays
+
+| Airport | Avg Dep Delay | Total Flights |
+|---------|---------------|--------------|
+| JFK     | 14.2          | 12000        |
+
+### Average Delay by Airline
+
+| Airline | Avg Dep Delay | Avg Arr Delay |
+|---------|---------------|---------------|
+| AA      | 12.7          | 10.3          |
+
+### Routes with Longest Avg Arrival Delays
+
+| Route         | Total Flights | Avg Arr Delay |
+|---------------|--------------|---------------|
+| JFK -> LAX    | 2000         | 18.5          |
 
 > Only non-cancelled flights are included. A flight is considered delayed if departure delay > 15 minutes.
 
