@@ -11,7 +11,7 @@ os.makedirs(output_dir, exist_ok=True)
 
 # File pattern
 csv_files = sorted(glob.glob(os.path.join(raw_dir, "on_time_performance_2023_*.csv")))
-print(f"Found {len(csv_files)} CSV files.")
+print(f"\nFound {len(csv_files)} CSV files.")
 
 # Correct column names from BTS file
 columns_to_keep = [
@@ -29,7 +29,7 @@ numeric_cols = [
 all_data = []
 
 for file in csv_files:
-    print(f"Reading {file}")
+    print(f"\nReading {file}")
     df = pd.read_csv(file, low_memory=False)
 
     # Standardize column names

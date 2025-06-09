@@ -1,22 +1,17 @@
 #!/usr/bin/env python3
 
-import os
+import subprocess
 
-# Step 1: Extract data
-print("🚀 Starting extraction...")
-os.system("python3 scripts/extract.py")
+print("🚀 Starting extraction...", flush=True)
+subprocess.run(["python3", "-u", "scripts/extract.py"], check=True)
 
-# Step 2: Transform data
-print("\n🧹 Cleaning and transforming data...")
-os.system("python3 scripts/transform.py")
+print("\n🧹 Cleaning and transforming data...", flush=True)
+subprocess.run(["python3", "-u", "scripts/transform.py"], check=True)
 
-# Step 3: Load into SQLite
-print("\n💾 Loading cleaned data into SQLite...")
-os.system("python3 scripts/load.py")
+print("\n💾 Loading cleaned data into SQLite...", flush=True)
+subprocess.run(["python3", "-u", "scripts/load.py"], check=True)
 
-# Step 4: Run SQL query and print summary
-print("\n📊 Running SQL summary query...")
-os.system("python3 scripts/run_sql.py")
+print("\n📊 Running SQL summary query...", flush=True)
+subprocess.run(["python3", "-u", "scripts/run_sql.py"], check=True)
 
-print("\n✅ Pipeline complete.")
-# This script orchestrates the entire ETL pipeline:
+print("\n✅ Pipeline complete.", flush=True)

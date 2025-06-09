@@ -9,10 +9,10 @@ input_path = os.path.join("data", "processed", "on_time_cleaned_2023_Jul_Dec.csv
 
 # Output DB file
 db_path = os.path.join("data", "processed", "flights.db")
-table_name = "on_time_flights"
+table_name = "flights" 
 
 # Read the cleaned CSV
-print(f"📄 Loading CSV: {input_path}")
+print(f"\n📄 Loading CSV: {input_path}")
 df = pd.read_csv(input_path)
 
 # Open SQLite connection

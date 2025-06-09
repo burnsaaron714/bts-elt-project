@@ -1,22 +1,26 @@
-# BTS Flight Delay ETL Project
+# BTS Flight Delay ETL Pipeline
 
-This is a simple ETL/ELT pipeline built with Python that processes U.S. Department of Transportation (BTS) On-Time Performance data from July–December 2023. The goal is to extract flight delay data, clean it, load it into a SQLite database, and generate a monthly delay summary by airline using SQL.
+This is an ETL/ELT pipeline built with Python that processes U.S. Department of Transportation - Bureau of Transportation Statistics (BTS) on time flight performance data from July–December 2023. The goal is to extract flight delay data, clean it, load it into a SQLite database, and generate a monthly delay summary by airline using SQL.
 
-## 📌 What the Project Does
+## Project Purpose
 
-- **Extract** raw CSVs from BTS.gov ZIP archives
-- **Transform** and filter the data to keep relevant columns
-- **Load** the cleaned data into a SQLite database
-- **Query** using SQL to summarize delays by month and airline
+I built this project to sharpen my data engineering skills for interview prep. I wanted to simulate an ETL pipeline using real-world aviation data from the Department of Transportation (BTS).
 
-## 🧰 Tech Stack
+## Method 
+
+- Extract raw CSVs from BTS.gov ZIP archives
+- Transform and filter the data to keep relevant columns
+- Load the cleaned data into a SQLite database
+- Query using SQL to summarize delays by month and airline
+
+## Tech Stack
 
 - Python (pandas, sqlite3)
 - SQLite (local file-based DB)
-- Shell/CLI for orchestration
+- CLI for orchestration
 - GitHub for version control
 
-## 📁 Folder Structure
+## Folder Structure
 
 ```
 de_project/
@@ -33,7 +37,7 @@ de_project/
 └── README.md
 ```
 
-## 🚀 How to Run the Project
+## How to Run the Project
 
 1. Clone the repo:
    ```bash
@@ -43,9 +47,9 @@ de_project/
 
 2. Install dependencies:
    ```bash
-   python3 -m venv venv
-   source venv/bin/activate
-   pip install pandas
+   python3 -m venv env
+   source env/bin/activate
+   pip install -r requirements.txt
    ```
 
 3. Run the full pipeline:
@@ -57,7 +61,7 @@ de_project/
    - `data/processed/on_time_cleaned_2023_Jul_Dec.csv`
    - `data/processed/flights.db`
 
-## 📊 Output Sample (SQL Summary)
+## Output Sample (SQL Summary)
 
 | Airline | Month     | Flights | Delayed | Avg Dep Delay | Avg Arr Delay |
 |---------|-----------|---------|---------|----------------|----------------|
@@ -65,15 +69,7 @@ de_project/
 
 > Only non-cancelled flights are included. A flight is considered delayed if departure delay > 15 minutes.
 
-## ✅ Purpose
-
-This project is designed to demonstrate:
-- Clean ETL structure across scripts
-- Use of SQL for analytics
-- Good folder hygiene and Git workflow
-- Beginner-friendly pipeline you can run end-to-end
-
-## 🙋‍♂️ Author
+## Author
 
 Aaron Burns  
 [GitHub Profile](https://github.com/burnsaaron714)

@@ -1,4 +1,1 @@
 pandas
-sqlalchemy
-requests
-python-dotenv
