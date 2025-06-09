@@ -75,6 +75,8 @@ Azure Blob Storage is a cloud-based storage solution that allows this pipeline t
 
 This makes the pipeline cloud-friendly, portable, and suitable for collaboration or deployment in production environments.
 
+**Azure Blob Storage setup**
+
 1. **Create a `.env` file in the project root with:**
    ```
    AZURE_STORAGE_CONNECTION_STRING=your_connection_string_here
