@@ -1,7 +1,14 @@
+# Byte-compiled / cache files
 __pycache__/
 *.pyc
-*.csv
+
+# Data files
 data/raw/
 data/processed/*.csv
 data/processed/*.db
+
+# Environment files
 .env
+
+# macOS system files
+.DS_Store

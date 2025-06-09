@@ -4,54 +4,68 @@ import os
 import glob
 import pandas as pd
 
-# Paths
-raw_dir = "data/raw"
-output_dir = "data/processed"
-os.makedirs(output_dir, exist_ok=True)
+def main():
+    """
+    Reads raw CSV files of flight data, selects relevant columns, 
+    converts certain columns to numeric, and saves a cleaned combined CSV.
+    """
+    # Set input and output directories
+    raw_dir = "data/raw"
+    output_dir = "data/processed"
+    os.makedirs(output_dir, exist_ok=True)  # Create output directory if it doesn't exist
 
-# File pattern
-csv_files = sorted(glob.glob(os.path.join(raw_dir, "on_time_performance_2023_*.csv")))
-print(f"\nFound {len(csv_files)} CSV files.")
+    # Find all relevant CSV files in the raw data directory
+    csv_pattern = os.path.join(raw_dir, "on_time_performance_2023_*.csv")
+    csv_files = sorted(glob.glob(csv_pattern))
+    print(f"\nFound {len(csv_files)} CSV files.")
 
-# Correct column names from BTS file
-columns_to_keep = [
-    "FLIGHTDATE", "REPORTING_AIRLINE", "TAIL_NUMBER",
-    "ORIGIN", "DEST",
-    "DEPDELAY", "ARRDELAY", "CANCELLED", "CANCELLATIONCODE",
-    "WEATHERDELAY", "NASDELAY", "CARRIERDELAY", "LATEAIRCRAFTDELAY"
-]
+    if not csv_files:
+        print("No CSV files found. Exiting.")
+        return
 
-# Numeric-only columns
-numeric_cols = [
-    "DEPDELAY", "ARRDELAY", "WEATHERDELAY", "NASDELAY", "CARRIERDELAY", "LATEAIRCRAFTDELAY"
-]
+    # List of columns to keep
+    columns_to_keep = [
+        # Flight info
+        "FLIGHTDATE", "REPORTING_AIRLINE", "TAIL_NUMBER", "ORIGIN", "DEST",
+        # Delay and cancellation info
+        "DEPDELAY", "ARRDELAY", "CANCELLED", "CANCELLATIONCODE",
+        "WEATHERDELAY", "NASDELAY", "CARRIERDELAY", "LATEAIRCRAFTDELAY"
+    ]
 
-all_data = []
+    # Columns that should be numeric
+    numeric_cols = [
+        "DEPDELAY", "ARRDELAY", "WEATHERDELAY", "NASDELAY", "CARRIERDELAY", "LATEAIRCRAFTDELAY"
+    ]
 
-for file in csv_files:
-    print(f"\nReading {file}")
-    df = pd.read_csv(file, low_memory=False)
+    all_data = []
 
-    # Standardize column names
-    df.columns = df.columns.str.strip().str.upper()
+    # Process each CSV file
+    for file_path in csv_files:
+        print(f"\nReading {file_path}")
+        df = pd.read_csv(file_path, low_memory=False)
 
-    # Make everything match the uppercase version
-    columns = [col.upper() for col in columns_to_keep]
-    numeric = [col.upper() for col in numeric_cols]
+        # Standardize column names: remove spaces and make uppercase for consistency
+        df.columns = df.columns.str.strip().str.upper()
 
-    # Keep available columns
-    available_cols = [col for col in columns if col in df.columns]
-    df = df[available_cols]
+        # Keep only the columns we care about (if they exist in this file)
+        available_cols = [col for col in columns_to_keep if col in df.columns]
+        df = df[available_cols]
 
-    # Convert numeric columns
-    for col in numeric:
-        if col in df.columns:
-            df[col] = pd.to_numeric(df[col], errors="coerce")
+        # Convert delay columns to numeric, coercing errors to NaN (e.g., if data is missing or invalid)
+        for col in numeric_cols:
+            if col in df.columns:
+                df.loc[:, col] = pd.to_numeric(df[col], errors="coerce")
 
-    all_data.append(df)
+        all_data.append(df)
 
-# Combine and save
-combined = pd.concat(all_data, ignore_index=True)
-output_path = os.path.join(output_dir, "on_time_cleaned_2023_Jul_Dec.csv")
-combined.to_csv(output_path, index=False)
-print(f"\n✅ Saved cleaned data to: {output_path}")
+    # Combine all DataFrames into one
+    combined = pd.concat(all_data, ignore_index=True)
+
+    # Save the cleaned, combined data to a new CSV file
+    output_path = os.path.join(output_dir, "on_time_cleaned_2023_Jul_Dec.csv")
+    combined.to_csv(output_path, index=False)
+    print(f"\nSaved cleaned data to: {output_path}")
+
+# This ensures main() only runs if this script is executed directly
+if __name__ == "__main__":
+    main()
